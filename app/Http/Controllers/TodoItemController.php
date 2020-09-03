@@ -3,16 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\TodoItem;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class TodoItemController
  * @package App
- * @mixin \Eloquent
+ * @mixin Eloquent
+ * @mixin Builder
  */
 class TodoItemController extends Controller
 {
+
+    public function __construct()
+    {
+
+    }
+
     public function all()
     {
         return TodoItem::all();
@@ -26,8 +36,9 @@ class TodoItemController extends Controller
     public function create(Request $request)
     {
         $item = TodoItem::create($request->all());
-        $item->user = $request->getUser();
 
+        dd(Auth::user());
+        $item->user = Auth::user();
 
 
         return response()->json($item, Response::HTTP_CREATED);
