@@ -1,11 +1,4 @@
-<style>
-.card {
-    margin-top: 10px;
-}
-.todo-add {
-    float: right;
-}
-</style>
+
 <template>
 
     <div class="card">
@@ -24,7 +17,10 @@
                     v-for="(item, key) in items"
                     :key="key"
                     v-bind:item="item"
-                    v-on:delete-todo="deleteTodo">
+                    >
+                    <template #delete>
+                        <span class="todo-item-delete" @click="deleteTodo(item)">delete</span>
+                    </template>
                 </TodoItem>
             </div>
 
@@ -66,18 +62,31 @@ export default {
                     console.log(response);
 
                     this.items.push(response.data)
-                    this.body = "";
+                    this.$set(this, 'body', '');
                 });
             }
         },
-        deleteTodo(todoId) {
-            axios.delete(`/api/todo-items/${todoId}`).then((response) => {
+        deleteTodo(item) {
+            axios.delete(`/api/todo-items/${item.id}`).then((response) => {
                 console.log(response)
                 if (response.status === 204) {
-                    this.items = this.items.filter(todo => todo.id !== todoId);
+                    this.$set(this, 'items', this.items.filter(todo => todo.id !== item.id));
                 }
             });
         }
     }
 }
 </script>
+<style>
+.card {
+    margin-top: 10px;
+}
+.todo-add {
+    float: right;
+}
+.todo-item-delete {
+    float: right;
+    color: #3490dc;
+    cursor: pointer;
+}
+</style>

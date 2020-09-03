@@ -1974,10 +1974,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -2012,20 +2008,20 @@ __webpack_require__.r(__webpack_exports__);
 
           _this2.items.push(response.data);
 
-          _this2.body = "";
+          _this2.$set(_this2, 'body', '');
         });
       }
     },
-    deleteTodo: function deleteTodo(todoId) {
+    deleteTodo: function deleteTodo(item) {
       var _this3 = this;
 
-      axios["delete"]("/api/todo-items/".concat(todoId)).then(function (response) {
+      axios["delete"]("/api/todo-items/".concat(item.id)).then(function (response) {
         console.log(response);
 
         if (response.status === 204) {
-          _this3.items = _this3.items.filter(function (todo) {
-            return todo.id !== todoId;
-          });
+          _this3.$set(_this3, 'items', _this3.items.filter(function (todo) {
+            return todo.id !== item.id;
+          }));
         }
       });
     }
@@ -2043,33 +2039,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -6527,7 +6496,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.card {\n    margin-top: 10px;\n}\n.todo-add {\n    float: right;\n}\n", ""]);
+exports.push([module.i, "\n.card {\n    margin-top: 10px;\n}\n.todo-add {\n    float: right;\n}\n.todo-item-delete {\n    float: right;\n    color: #3490dc;\n    cursor: pointer;\n}\n", ""]);
 
 // exports
 
@@ -6546,7 +6515,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.todo-item {\n    margin: 7px;\n    border-radius: 10px;\n    background-color: #636b6f;\n    color: #FFFFFF;\n}\n.todo-item-header {\n    border-radius: 10px 10px 0 0;\n    background-color: #99d4d4;\n    color: #636b6f;\n    padding: 15px;\n}\n.todo-item-title {\n    float: left;\n    margin-right: 20px;\n}\n.todo-item-delete {\n    float: right;\n    color: #3490dc;\n    cursor: pointer;\n}\n.todo-item-body {\n    padding: 15px;\n}\n", ""]);
+exports.push([module.i, "\n.todo-item {\n    margin: 7px;\n    border-radius: 10px;\n    background-color: #636b6f;\n    color: #FFFFFF;\n}\n.todo-item-header {\n    border-radius: 10px 10px 0 0;\n    background-color: #99d4d4;\n    color: #636b6f;\n    padding: 15px;\n}\n.todo-item-title {\n    float: left;\n    margin-right: 20px;\n}\n.todo-item-body {\n    padding: 15px;\n}\n", ""]);
 
 // exports
 
@@ -38464,7 +38433,32 @@ var render = function() {
           return _c("TodoItem", {
             key: key,
             attrs: { item: item },
-            on: { "delete-todo": _vm.deleteTodo }
+            scopedSlots: _vm._u(
+              [
+                {
+                  key: "delete",
+                  fn: function() {
+                    return [
+                      _c(
+                        "span",
+                        {
+                          staticClass: "todo-item-delete",
+                          on: {
+                            click: function($event) {
+                              return _vm.deleteTodo(item)
+                            }
+                          }
+                        },
+                        [_vm._v("delete")]
+                      )
+                    ]
+                  },
+                  proxy: true
+                }
+              ],
+              null,
+              true
+            )
           })
         }),
         1
@@ -38495,27 +38489,20 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "todo-item" }, [
-    _c("div", { staticClass: "todo-item-header" }, [
-      _c("div", { staticClass: "todo-item-title" }, [
-        _vm._v("\n            " + _vm._s(_vm.item.title) + "\n        ")
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "todo-item-delete" }, [
-        _c(
-          "span",
-          {
-            on: {
-              click: function($event) {
-                return _vm.$emit("delete-todo", _vm.item.id)
-              }
-            }
-          },
-          [_vm._v("delete")]
-        )
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "clearfix" })
-    ]),
+    _c(
+      "div",
+      { staticClass: "todo-item-header" },
+      [
+        _c("div", { staticClass: "todo-item-title" }, [
+          _vm._v("\n            " + _vm._s(_vm.item.title) + "\n        ")
+        ]),
+        _vm._v(" "),
+        _vm._t("delete"),
+        _vm._v(" "),
+        _c("div", { staticClass: "clearfix" })
+      ],
+      2
+    ),
     _vm._v(" "),
     _c("div", { staticClass: "todo-item-body" }, [
       _vm._v("\n        " + _vm._s(_vm.item.body) + "\n    ")
