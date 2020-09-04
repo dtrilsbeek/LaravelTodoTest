@@ -3,16 +3,14 @@
 namespace App;
 
 use Eloquent;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 
 /**
- * Class User
+ * Class User.
  *
- * @package App
  * @mixin Eloquent
  * @property int $id
  * @property string $name
@@ -22,9 +20,9 @@ use Illuminate\Support\Str;
  * @property string|null $remember_token
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\TodoItem[] $TodoItems
+ * @property-read \App\TodoItem[]|\Illuminate\Database\Eloquent\Collection $TodoItems
  * @property-read int|null $todo_items_count
- * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property-read \Illuminate\Notifications\DatabaseNotification[]|\Illuminate\Notifications\DatabaseNotificationCollection $notifications
  * @property-read int|null $notifications_count
  * @method static Builder|User newModelQuery()
  * @method static Builder|User newQuery()

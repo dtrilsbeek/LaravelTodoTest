@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ApiTokenController extends Controller
 {
@@ -41,7 +41,7 @@ class ApiTokenController extends Controller
         }
 
         return response()->json([
-            'data' => 'test'
+            'data' => 'test',
         ]);
 
         return $this->sendFailedLoginResponse($request);
