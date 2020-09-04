@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Providers\RouteServiceProvider;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
@@ -12,12 +14,22 @@ class ApiTokenController extends Controller
      */
     public function __construct()
     {
-//        $this->middleware('auth');
+        $this->middleware('guest')->except('logout');
     }
+
+    use AuthenticatesUsers;
+
+    /**
+     * Where to redirect users after login.
+     *
+     * @var string
+     */
+    protected $redirectTo = RouteServiceProvider::HOME;
 
     public function login(Request $request)
     {
-        $this->validateLogin($request);
+        return response($request->all());
+//        return $this->validateLogin($request);
 
         if ($this->attemptLogin($request)) {
             $user = $this->guard()->user();
@@ -27,6 +39,10 @@ class ApiTokenController extends Controller
                 'data' => $user->toArray(),
             ]);
         }
+
+        return response()->json([
+            'data' => 'test'
+        ]);
 
         return $this->sendFailedLoginResponse($request);
     }

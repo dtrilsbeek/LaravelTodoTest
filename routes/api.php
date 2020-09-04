@@ -21,9 +21,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('todo-items', 'TodoItemController@all');
 Route::get('todo-items/{item}', 'TodoItemController@find');
-//Route::get('users/auth', 'ApiTokenController@update');
-Route::post('login', 'Auth\LoginController@login');
-Route::group(['middleware' => 'auth:api'], function () {
+Route::post('auth', 'ApiTokenController@login');
+//Route::post('login', 'Auth\LoginController@login');
+Route::group(['middleware' => 'auth'], function () {
 
     Route::post('todo-items', 'TodoItemController@create');
     Route::put('todo-items/{item}', 'TodoItemController@update');

@@ -50979,10 +50979,8 @@ window.axios.interceptors.request.use(function (request) {
 });
 window.axios.interceptors.response.use(function (response) {
   //Store Current User / API Token Example
-  console.log("testttt");
-  console.log(response);
-
   if (response.data.hasOwnProperty('api_token')) {
+    console.log('Api token set');
     Cookies.set('todo_auth_token', response.data.api_token);
   }
 
