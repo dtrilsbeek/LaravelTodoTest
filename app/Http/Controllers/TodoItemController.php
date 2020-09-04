@@ -7,7 +7,6 @@ use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
 
 /**
  * Class TodoItemController
@@ -37,8 +36,8 @@ class TodoItemController extends Controller
     {
         $item = TodoItem::create($request->all());
 
-        dd(Auth::user());
-        $item->user = Auth::user();
+//        dd(Auth::user());
+//        $item->user = Auth::user();
 
 
         return response()->json($item, Response::HTTP_CREATED);

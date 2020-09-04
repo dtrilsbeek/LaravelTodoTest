@@ -84,11 +84,11 @@
     <script src="http://localhost:35729/livereload.js"></script>
 @endif
 
-@if(Auth::user())
-    <script>
-        window.Laravel = <?php echo json_encode(['api_token' => Auth::user()->name]); ?>
-    </script>
-@endif
+{{--@if(Auth::user())--}}
+{{--    <script>--}}
+        {{--window.Laravel = <?php echo json_encode(['api_token' => Auth::user()->name]); ?>--}}
+{{--    // </script>--}}
+{{--@endif--}}
 
 </body>
 </html>
