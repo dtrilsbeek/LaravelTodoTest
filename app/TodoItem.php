@@ -7,11 +7,9 @@ use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
-
 /**
- * Class TodoItem
+ * Class TodoItem.
  *
- * @package App
  * @mixin Eloquent
  * @property int $id
  * @property string $title
@@ -36,6 +34,4 @@ class TodoItem extends Model
     {
         return $this->belongsTo('App\User');
     }
-
-
 }

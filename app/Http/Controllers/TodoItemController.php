@@ -10,17 +10,14 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 /**
- * Class TodoItemController
- * @package App
+ * Class TodoItemController.
  * @mixin Eloquent
  * @mixin Builder
  */
 class TodoItemController extends Controller
 {
-
     public function __construct()
     {
-
     }
 
     public function all()
@@ -40,7 +37,6 @@ class TodoItemController extends Controller
 //        dd(Auth::user()->getAuthIdentifierName());
 //        $item->user = Auth::user();
 
-
         return response()->json(Auth::user()->email, Response::HTTP_CREATED);
     }
 
@@ -51,7 +47,8 @@ class TodoItemController extends Controller
         return response()->json($item, Response::HTTP_OK);
     }
 
-    public function delete(TodoItem $item) {
+    public function delete(TodoItem $item)
+    {
         $item->delete();
 
         return response()->json(null, Response::HTTP_NO_CONTENT);

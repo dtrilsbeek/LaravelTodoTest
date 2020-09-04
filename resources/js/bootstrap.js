@@ -21,25 +21,30 @@ try {
 window.Cookies = require('js-cookie')
 window.axios = require('axios');
 
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-window.axios.interceptors.request.use((request) => {
-    const token = Cookies.get('todo_auth_token');
-    if(token){
-        request.headers = {
-            Authorization: 'Bearer ' + token,
-        }
-    }
-    return request;
-})
-window.axios.interceptors.response.use((response) => {
-    //Store Current User / API Token Example
-    if(response.data.hasOwnProperty('api_token')){
-        console.log('Api token set')
-        Cookies.set('todo_auth_token', response.data.api_token)
-    }
+window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 
-    return response;
-});
+/**
+ * Next we will register the CSRF Token as a common header with Axios so that
+ * all outgoing HTTP requests automatically have it attached. This is just
+ * a simple convenience so we don't have to attach every token manually.
+ */
+
+let token = document.head.querySelector('meta[name="csrf-token"]')
+
+if (token) {
+    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content
+} else {
+    console.error('CSRF token not found.')
+}
+// window.axios.interceptors.response.use((response) => {
+//     //Store Current User / API Token Example
+//     if(response.data.hasOwnProperty('api_token')){
+//         console.log('Api token set')
+//         Cookies.set('todo_auth_token', response.data.api_token)
+//     }
+//
+//     return response;
+// });
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

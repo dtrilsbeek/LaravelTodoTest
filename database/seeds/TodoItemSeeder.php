@@ -16,7 +16,7 @@ class TodoItemSeeder extends Seeder
 
         $faker = \Faker\Factory::create();
 
-        for($i = 0; $i < 15; $i++) {
+        for ($i = 0; $i < 15; $i++) {
             TodoItem::create([
                 'title' => $faker->sentence,
                 'body'=> $faker->paragraph,
