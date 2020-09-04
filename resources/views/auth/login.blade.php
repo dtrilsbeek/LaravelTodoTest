@@ -8,7 +8,7 @@
                 <div class="card-header">{{ __('Login') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
+                    <form onsubmit="submitLogin(this)">
                         @csrf
 
                         <div class="form-group row">
@@ -71,3 +71,12 @@
     </div>
 </div>
 @endsection
+<script>
+    function submitLogin(e) {
+        e.preventDefault();
+        axios.post('/login', new FormData(this)).then((response) => {
+            console.log(response);
+        });
+    }
+
+</script>

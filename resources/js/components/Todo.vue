@@ -42,9 +42,13 @@ export default {
     },
 
     mounted() {
+        // axios.get('/api/users/auth').then((response) => {
+        //     console.log("auth: ",response);
+        // });
+
         axios.get('/api/todo-items').then((response) => {
             console.log(response);
-            this.items = response.data;
+            this.$set(this, 'items', response.data);
         })
     },
 

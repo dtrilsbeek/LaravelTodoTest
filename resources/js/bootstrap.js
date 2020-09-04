@@ -18,10 +18,29 @@ try {
  * to our Laravel back-end. This library automatically handles sending the
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
-
+window.Cookies = require('js-cookie')
 window.axios = require('axios');
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.axios.interceptors.request.use((request) => {
+    const token = Cookies.get('todo_auth_token');
+    if(token){
+        request.headers = {
+            Authorization: 'Bearer ' + token,
+        }
+    }
+    return request;
+})
+window.axios.interceptors.response.use((response) => {
+    //Store Current User / API Token Example
+    console.log("testttt")
+    console.log(response);
+    if(response.data.hasOwnProperty('api_token')){
+        Cookies.set('todo_auth_token', response.data.api_token)
+    }
+
+    return response;
+});
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
