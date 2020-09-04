@@ -21,6 +21,12 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Auth::routes();
+Route::post('api/auth', 'ApiTokenController@login');
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('api/todo-items', 'TodoItemController@all');
+    Route::get('api/todo-items/{item}', 'TodoItemController@find');
+    Route::post('api/todo-items', 'TodoItemController@create');
+    Route::put('api/todo-items/{item}', 'TodoItemController@update');
+    Route::delete('api/todo-items/{item}', 'TodoItemController@delete');
+});

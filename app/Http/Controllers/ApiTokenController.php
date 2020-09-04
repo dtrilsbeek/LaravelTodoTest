@@ -26,27 +26,6 @@ class ApiTokenController extends Controller
      */
     protected $redirectTo = RouteServiceProvider::HOME;
 
-    public function login(Request $request)
-    {
-        return response($request->all());
-//        return $this->validateLogin($request);
-
-        if ($this->attemptLogin($request)) {
-            $user = $this->guard()->user();
-            $user->generateToken();
-
-            return response()->json([
-                'data' => $user->toArray(),
-            ]);
-        }
-
-        return response()->json([
-            'data' => 'test',
-        ]);
-
-        return $this->sendFailedLoginResponse($request);
-    }
-
     /**
      * Update the authenticated user's API token.
      *

@@ -17,13 +17,3 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-
-Route::get('todo-items', 'TodoItemController@all');
-Route::get('todo-items/{item}', 'TodoItemController@find');
-Route::post('auth', 'ApiTokenController@login');
-//Route::post('login', 'Auth\LoginController@login');
-Route::group(['middleware' => 'auth'], function () {
-    Route::post('todo-items', 'TodoItemController@create');
-    Route::put('todo-items/{item}', 'TodoItemController@update');
-    Route::delete('todo-items/{item}', 'TodoItemController@delete');
-});
