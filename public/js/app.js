@@ -2032,30 +2032,24 @@ __webpack_require__.r(__webpack_exports__);
     addTodo: function addTodo() {
       var _this2 = this;
 
-      if (this.body.length > 0) {
-        var data = {
-          title: this.title,
-          body: this.body
-        };
-        console.log(data);
-        axios.post('/api/todo-items', data).then(function (response) {
-          console.log(response);
+      var data = {
+        title: this.title,
+        body: this.body
+      };
+      console.log(data);
+      axios.post('/api/todo-items', data).then(function (response) {
+        console.log(response);
 
-          _this2.items.push(response.data);
+        _this2.items.push(response.data);
 
-          _this2.$set(_this2, 'title', '');
+        _this2.$set(_this2, 'title', '');
 
-          _this2.$set(_this2, 'body', '');
-        })["catch"](function (error) {
-          if (error.response.status === 422) {
-            _this2.validationErrors = error.response.data.errors;
-          }
-        });
-      } else {
-        this.$set(this, 'validationErrors', [{
-          error: "Empty todo"
-        }]);
-      }
+        _this2.$set(_this2, 'body', '');
+      })["catch"](function (error) {
+        if (error.response.status === 422) {
+          _this2.validationErrors = error.response.data.errors;
+        }
+      });
     },
     deleteTodo: function deleteTodo(item) {
       var _this3 = this;
@@ -6568,7 +6562,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.todo-item {\n    position: relative;\n    margin: 7px;\n    border-radius: 10px;\n    background-color: #636b6f;\n    color: #FFFFFF;\n}\n.todo-item-header {\n    border-radius: 10px 10px 0 0;\n    background-color: #99d4d4;\n    color: #636b6f;\n    padding: 15px;\n}\n.todo-item-title {\n    float: left;\n    margin-right: 20px;\n}\n.todo-item-body {\n    padding: 15px 15px 30px;\n    white-space: pre-line;\n}\n.todo-item-user {\n    padding: 10px 10px;\n    position: absolute;\n    color: #89898f;\n    bottom: 0;\n    right: 0;\n}\n", ""]);
+exports.push([module.i, "\n.todo-item {\n    position: relative;\n    margin: 7px;\n    border-radius: 10px;\n    background-color: #636b6f;\n    color: #FFFFFF;\n}\n.todo-item-header {\n    border-radius: 10px 10px 0 0;\n    background-color: #99d4d4;\n    color: #636b6f;\n    padding: 15px;\n}\n.todo-item-title {\n    float: left;\n    margin-right: 20px;\n    max-width: 300px;\n    word-wrap: break-word;\n}\n.todo-item-body {\n    padding: 15px 15px 30px;\n    max-width: 300px;\n    white-space: pre-line;\n    word-wrap: break-word;\n}\n.todo-item-user {\n    padding: 10px 10px;\n    position: absolute;\n    color: #acacb0;\n    bottom: 0;\n    right: 0;\n    font-size: x-small;\n}\n", ""]);
 
 // exports
 

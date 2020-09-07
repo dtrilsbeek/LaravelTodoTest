@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\TodoItem;
+use App\User;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -35,10 +36,12 @@ class TodoItemController extends Controller
         $validated = $request->validate([
             'title' => 'max:255',
             'body'=> 'required',
+            'user_id' => 'exists:users,id'
         ]);
+        $user = ! empty($validated['user_id']) ? User::find($validated['user_id']) : Auth::user();
 
-        $item = new TodoItem($request->all());
-        $item->user()->associate(Auth::user());
+        $item = new TodoItem($validated);
+        $item->user()->associate($user);
         $item->save();
         $item->refresh();
 

@@ -51,16 +51,21 @@
 .todo-item-title {
     float: left;
     margin-right: 20px;
+    max-width: 300px;
+    word-wrap: break-word;
 }
 .todo-item-body {
     padding: 15px 15px 30px;
+    max-width: 300px;
     white-space: pre-line;
+    word-wrap: break-word;
 }
 .todo-item-user {
     padding: 10px 10px;
     position: absolute;
-    color: #89898f;
+    color: #acacb0;
     bottom: 0;
     right: 0;
+    font-size: x-small;
 }
 </style>

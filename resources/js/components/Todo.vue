@@ -85,28 +85,24 @@ export default {
 
     methods: {
         addTodo: function () {
-            if (this.body.length > 0) {
-                const data = {
-                    title: this.title,
-                    body: this.body
-                }
-
-                console.log(data);
-
-                axios.post('/api/todo-items', data).then((response) => {
-                    console.log(response);
-
-                    this.items.push(response.data)
-                    this.$set(this, 'title', '');
-                    this.$set(this, 'body', '');
-                }).catch(error => {
-                    if (error.response.status === 422) {
-                        this.validationErrors = error.response.data.errors;
-                    }
-                });
-            } else {
-                this.$set(this, 'validationErrors', [{error: "Empty todo"}]);
+            const data = {
+                title: this.title,
+                body: this.body
             }
+
+            console.log(data);
+
+            axios.post('/api/todo-items', data).then((response) => {
+                console.log(response);
+
+                this.items.push(response.data)
+                this.$set(this, 'title', '');
+                this.$set(this, 'body', '');
+            }).catch(error => {
+                if (error.response.status === 422) {
+                    this.validationErrors = error.response.data.errors;
+                }
+            });
         },
         deleteTodo(item) {
             axios.delete(`/api/todo-items/${item.id}`).then((response) => {
