@@ -22,7 +22,7 @@ class TodoItemController extends Controller
 
     public function all()
     {
-        return TodoItem::all();
+        return TodoItem::all()->with('userSongs')->get();;
     }
 
     public function find(TodoItem $item)
@@ -32,12 +32,12 @@ class TodoItemController extends Controller
 
     public function create(Request $request)
     {
-        $item = TodoItem::create($request->all());
+        $item = new TodoItem($request->all());
+        $item->user()->associate(Auth::user());
+        $item->save();
+        $item->refresh();
 
-//        dd(Auth::user()->getAuthIdentifierName());
-//        $item->user = Auth::user();
-
-        return response()->json(Auth::user()->email, Response::HTTP_CREATED);
+        return response()->json($item, Response::HTTP_CREATED);
     }
 
     public function update(Request $request, TodoItem $item)

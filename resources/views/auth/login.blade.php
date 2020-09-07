@@ -8,7 +8,6 @@
                     <div class="card-header">{{ __('Login') }}</div>
 
                     <div class="card-body">
-                        <h1>test</h1>
                         <form method="POST">
                             @csrf
 

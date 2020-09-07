@@ -2062,8 +2062,24 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['item']
+  props: ['item'],
+  mounted: function mounted() {
+    console.log(this.item);
+  },
+  methods: {
+    getUserName: function getUserName() {
+      console.log("User: ", this.item.user);
+
+      if (this.item.user && this.item.user.name) {
+        console.log("name: ", this.item.user.name);
+        return this.item.user.name;
+      }
+    }
+  }
 });
 
 /***/ }),
@@ -38688,6 +38704,10 @@ var render = function() {
     _vm._v(" "),
     _c("div", { staticClass: "todo-item-body" }, [
       _vm._v("\n        " + _vm._s(_vm.item.body) + "\n    ")
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "todo-item-user" }, [
+      _vm._v("\n        " + _vm._s(_vm.getUserName()) + "\n    ")
     ])
   ])
 }
@@ -50966,26 +50986,28 @@ try {
 window.Cookies = __webpack_require__(/*! js-cookie */ "./node_modules/js-cookie/src/js.cookie.js");
 window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-window.axios.interceptors.request.use(function (request) {
-  var token = Cookies.get('todo_auth_token');
+/**
+ * Next we will register the CSRF Token as a common header with Axios so that
+ * all outgoing HTTP requests automatically have it attached. This is just
+ * a simple convenience so we don't have to attach every token manually.
+ */
 
-  if (token) {
-    request.headers = {
-      Authorization: 'Bearer ' + token
-    };
-  }
+var token = document.head.querySelector('meta[name="csrf-token"]');
 
-  return request;
-});
-window.axios.interceptors.response.use(function (response) {
-  //Store Current User / API Token Example
-  if (response.data.hasOwnProperty('api_token')) {
-    console.log('Api token set');
-    Cookies.set('todo_auth_token', response.data.api_token);
-  }
+if (token) {
+  window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+} else {
+  console.error('CSRF token not found.');
+} // window.axios.interceptors.response.use((response) => {
+//     //Store Current User / API Token Example
+//     if(response.data.hasOwnProperty('api_token')){
+//         console.log('Api token set')
+//         Cookies.set('todo_auth_token', response.data.api_token)
+//     }
+//
+//     return response;
+// });
 
-  return response;
-});
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting

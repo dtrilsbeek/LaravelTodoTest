@@ -12,6 +12,9 @@
         <div class="todo-item-body">
             {{ item.body }}
         </div>
+        <div class="todo-item-user">
+            {{ getUserName() }}
+        </div>
     </div>
 
 
@@ -19,8 +22,25 @@
 
 <script>
     export default {
-        props: ['item']
+        props: ['item'],
+
+        mounted() {
+            console.log(this.item);
+        },
+
+        methods: {
+            getUserName: function() {
+                console.log("User: ", this.item.user);
+                if(this.item.user && this.item.user.name) {
+                    console.log("name: ", this.item.user.name);
+
+                    return this.item.user.name;
+                }
+            }
+        }
     }
+
+
 </script>
 
 <style>
