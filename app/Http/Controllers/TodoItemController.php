@@ -23,7 +23,6 @@ class TodoItemController extends Controller
     public function all()
     {
         return TodoItem::with('user')->get();
-//        return TodoItem::all();
     }
 
     public function find(TodoItem $item)
@@ -33,6 +32,11 @@ class TodoItemController extends Controller
 
     public function create(Request $request)
     {
+        $validated = $request->validate([
+            'title' => 'max:255',
+            'body'=> 'required',
+        ]);
+
         $item = new TodoItem($request->all());
         $item->user()->associate(Auth::user());
         $item->save();

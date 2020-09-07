@@ -1974,6 +1974,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -1981,6 +1993,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      title: "",
       body: "",
       items: []
     };
@@ -2003,7 +2016,7 @@ __webpack_require__.r(__webpack_exports__);
 
       if (this.body.length > 0) {
         var data = {
-          title: 'title',
+          title: this.title,
           body: this.body
         };
         console.log(data);
@@ -38586,44 +38599,99 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "card" }, [
-    _c("div", { staticClass: "card-header" }, [
-      _vm._v("Todo List\n\n        "),
-      _c("div", { staticClass: "todo-add" }, [
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.body,
-              expression: "body"
-            }
-          ],
-          attrs: { type: "text" },
-          domProps: { value: _vm.body },
-          on: {
-            keyup: function($event) {
-              if (
-                !$event.type.indexOf("key") &&
-                _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
-              ) {
-                return null
-              }
-              return _vm.addTodo($event)
-            },
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.body = $event.target.value
-            }
-          }
-        }),
-        _vm._v(" "),
-        _c("button", { on: { click: _vm.addTodo } }, [_vm._v("Add")])
-      ])
-    ]),
+    _c("div", { staticClass: "card-header" }, [_vm._v("Todo List")]),
     _vm._v(" "),
     _c("div", { staticClass: "card-body" }, [
+      _c("div", { staticClass: "todo-add container" }, [
+        _c("div", { staticClass: "form-group row" }, [
+          _c(
+            "label",
+            {
+              staticClass: "col-md-4 col-form-label text-md-right",
+              attrs: { for: "title" }
+            },
+            [_vm._v("Title")]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-md-6" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.title,
+                  expression: "title"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { id: "title", type: "text" },
+              domProps: { value: _vm.title },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.title = $event.target.value
+                }
+              }
+            })
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group row" }, [
+          _c(
+            "label",
+            {
+              staticClass: "col-md-4 col-form-label text-md-right",
+              attrs: { for: "body" }
+            },
+            [_vm._v("What needs to be done?")]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-md-6" }, [
+            _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.body,
+                  expression: "body"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { id: "body", required: "required" },
+              domProps: { value: _vm.body },
+              on: {
+                keyup: function($event) {
+                  if (
+                    !$event.type.indexOf("key") &&
+                    _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                  ) {
+                    return null
+                  }
+                  return _vm.addTodo($event)
+                },
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.body = $event.target.value
+                }
+              }
+            })
+          ])
+        ]),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-primary float-right",
+            on: { click: _vm.addTodo }
+          },
+          [_vm._v("Add")]
+        )
+      ]),
+      _vm._v(" "),
       _c(
         "div",
         { staticClass: "row justify-content-center" },
