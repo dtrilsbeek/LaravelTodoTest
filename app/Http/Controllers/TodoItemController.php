@@ -22,7 +22,8 @@ class TodoItemController extends Controller
 
     public function all()
     {
-        return TodoItem::all()->with('userSongs')->get();;
+        return TodoItem::with('user')->get();
+//        return TodoItem::all();
     }
 
     public function find(TodoItem $item)
