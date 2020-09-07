@@ -1,11 +1,19 @@
 <template>
+    <div class="todo">
+        <div class="card">
+            <div class="card-header">Add Todo Item</div>
 
-    <div class="card">
-        <div class="card-header">Todo List</div>
+            <div class="card-body todo-add container">
 
-        <div class="card-body">
+                <ul style="list-style-type: none; padding: 0;">
+                    <li v-for="(errors, key) in validationErrors" :key="key"
+                        v-bind:error="errors" class="alert alert-danger">
+                        <div v-for="message in errors" v-bind:message="message">
+                            {{ message }}
+                        </div>
+                    </li>
+                </ul>
 
-            <div class="todo-add container">
                 <div class="form-group row">
                     <label for="title" class="col-md-4 col-form-label text-md-right">Title</label>
                     <div class="col-md-6">
@@ -16,29 +24,38 @@
                     <label for="body" class="col-md-4 col-form-label text-md-right">What needs to be done?</label>
                     <div class="col-md-6">
                         <textarea id="body"
-                                  @keyup.enter="addTodo"
                                   v-model="body" required="required" class="form-control"></textarea>
                     </div>
                 </div>
 
-                <button v-on:click="addTodo" class="btn btn-primary float-right">Add</button>
+                <div class="form-group row mb-0">
+                    <div class="col-md-8 offset-md-4">
+                        <button v-on:click="addTodo" class="btn btn-primary">Add</button>
+                    </div>
+                </div>
             </div>
+        </div>
 
-            <div class="row justify-content-center">
-                <TodoItem
-                    v-for="(item, key) in items"
-                    :key="key"
-                    v-bind:item="item"
-                >
-                    <template #delete>
-                        <span class="todo-item-delete" @click="deleteTodo(item)">delete</span>
-                    </template>
-                </TodoItem>
+        <div class="card">
+            <div class="card-header">Todo List</div>
+
+            <div class="card-body">
+
+                <div class="row justify-content-center">
+                    <TodoItem
+                        v-for="(item, key) in items"
+                        :key="key"
+                        v-bind:item="item"
+                    >
+                        <template #delete>
+                            <span class="todo-item-delete" @click="deleteTodo(item)">delete</span>
+                        </template>
+                    </TodoItem>
+                </div>
+
             </div>
-
         </div>
     </div>
-
 </template>
 
 <script>
@@ -50,7 +67,8 @@ export default {
         return {
             title: "",
             body: "",
-            items: []
+            items: [],
+            validationErrors: [],
         }
     },
 
@@ -79,8 +97,15 @@ export default {
                     console.log(response);
 
                     this.items.push(response.data)
+                    this.$set(this, 'title', '');
                     this.$set(this, 'body', '');
+                }).catch(error => {
+                    if (error.response.status === 422) {
+                        this.validationErrors = error.response.data.errors;
+                    }
                 });
+            } else {
+                this.$set(this, 'validationErrors', [{error: "Empty todo"}]);
             }
         },
         deleteTodo(item) {

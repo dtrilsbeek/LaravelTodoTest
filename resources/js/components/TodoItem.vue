@@ -9,9 +9,7 @@
             <div class="clearfix"></div>
         </div>
 
-        <div class="todo-item-body">
-            {{ item.body }}
-        </div>
+        <div class="todo-item-body">{{ item.body }}</div>
         <div class="todo-item-user">
             {{ getUserName() }}
         </div>
@@ -24,16 +22,9 @@
     export default {
         props: ['item'],
 
-        mounted() {
-            console.log(this.item);
-        },
-
         methods: {
             getUserName: function() {
-                console.log("User: ", this.item.user);
                 if(this.item.user && this.item.user.name) {
-                    console.log("name: ", this.item.user.name);
-
                     return this.item.user.name;
                 }
             }
@@ -45,6 +36,7 @@
 
 <style>
 .todo-item {
+    position: relative;
     margin: 7px;
     border-radius: 10px;
     background-color: #636b6f;
@@ -61,6 +53,14 @@
     margin-right: 20px;
 }
 .todo-item-body {
-    padding: 15px;
+    padding: 15px 15px 30px;
+    white-space: pre-line;
+}
+.todo-item-user {
+    padding: 10px 10px;
+    position: absolute;
+    color: #89898f;
+    bottom: 0;
+    right: 0;
 }
 </style>

@@ -1986,6 +1986,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -1995,7 +2012,8 @@ __webpack_require__.r(__webpack_exports__);
     return {
       title: "",
       body: "",
-      items: []
+      items: [],
+      validationErrors: []
     };
   },
   mounted: function mounted() {
@@ -2025,8 +2043,18 @@ __webpack_require__.r(__webpack_exports__);
 
           _this2.items.push(response.data);
 
+          _this2.$set(_this2, 'title', '');
+
           _this2.$set(_this2, 'body', '');
+        })["catch"](function (error) {
+          if (error.response.status === 422) {
+            _this2.validationErrors = error.response.data.errors;
+          }
         });
+      } else {
+        this.$set(this, 'validationErrors', [{
+          error: "Empty todo"
+        }]);
       }
     },
     deleteTodo: function deleteTodo(item) {
@@ -2076,19 +2104,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['item'],
-  mounted: function mounted() {
-    console.log(this.item);
-  },
   methods: {
     getUserName: function getUserName() {
-      console.log("User: ", this.item.user);
-
       if (this.item.user && this.item.user.name) {
-        console.log("name: ", this.item.user.name);
         return this.item.user.name;
       }
     }
@@ -6548,7 +6568,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.todo-item {\n    margin: 7px;\n    border-radius: 10px;\n    background-color: #636b6f;\n    color: #FFFFFF;\n}\n.todo-item-header {\n    border-radius: 10px 10px 0 0;\n    background-color: #99d4d4;\n    color: #636b6f;\n    padding: 15px;\n}\n.todo-item-title {\n    float: left;\n    margin-right: 20px;\n}\n.todo-item-body {\n    padding: 15px;\n}\n", ""]);
+exports.push([module.i, "\n.todo-item {\n    position: relative;\n    margin: 7px;\n    border-radius: 10px;\n    background-color: #636b6f;\n    color: #FFFFFF;\n}\n.todo-item-header {\n    border-radius: 10px 10px 0 0;\n    background-color: #99d4d4;\n    color: #636b6f;\n    padding: 15px;\n}\n.todo-item-title {\n    float: left;\n    margin-right: 20px;\n}\n.todo-item-body {\n    padding: 15px 15px 30px;\n    white-space: pre-line;\n}\n.todo-item-user {\n    padding: 10px 10px;\n    position: absolute;\n    color: #89898f;\n    bottom: 0;\n    right: 0;\n}\n", ""]);
 
 // exports
 
@@ -38598,11 +38618,37 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "card" }, [
-    _c("div", { staticClass: "card-header" }, [_vm._v("Todo List")]),
-    _vm._v(" "),
-    _c("div", { staticClass: "card-body" }, [
-      _c("div", { staticClass: "todo-add container" }, [
+  return _c("div", { staticClass: "todo" }, [
+    _c("div", { staticClass: "card" }, [
+      _c("div", { staticClass: "card-header" }, [_vm._v("Add Todo Item")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-body todo-add container" }, [
+        _c(
+          "ul",
+          { staticStyle: { "list-style-type": "none", padding: "0" } },
+          _vm._l(_vm.validationErrors, function(errors, key) {
+            return _c(
+              "li",
+              {
+                key: key,
+                staticClass: "alert alert-danger",
+                attrs: { error: errors }
+              },
+              _vm._l(errors, function(message) {
+                return _c("div", { attrs: { message: message } }, [
+                  _vm._v(
+                    "\n                        " +
+                      _vm._s(message) +
+                      "\n                    "
+                  )
+                ])
+              }),
+              0
+            )
+          }),
+          0
+        ),
+        _vm._v(" "),
         _c("div", { staticClass: "form-group row" }, [
           _c(
             "label",
@@ -38662,15 +38708,6 @@ var render = function() {
               attrs: { id: "body", required: "required" },
               domProps: { value: _vm.body },
               on: {
-                keyup: function($event) {
-                  if (
-                    !$event.type.indexOf("key") &&
-                    _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
-                  ) {
-                    return null
-                  }
-                  return _vm.addTodo($event)
-                },
                 input: function($event) {
                   if ($event.target.composing) {
                     return
@@ -38682,53 +38719,60 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-primary float-right",
-            on: { click: _vm.addTodo }
-          },
-          [_vm._v("Add")]
-        )
-      ]),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "row justify-content-center" },
-        _vm._l(_vm.items, function(item, key) {
-          return _c("TodoItem", {
-            key: key,
-            attrs: { item: item },
-            scopedSlots: _vm._u(
-              [
-                {
-                  key: "delete",
-                  fn: function() {
-                    return [
-                      _c(
-                        "span",
-                        {
-                          staticClass: "todo-item-delete",
-                          on: {
-                            click: function($event) {
-                              return _vm.deleteTodo(item)
-                            }
-                          }
-                        },
-                        [_vm._v("delete")]
-                      )
-                    ]
-                  },
-                  proxy: true
-                }
-              ],
-              null,
-              true
+        _c("div", { staticClass: "form-group row mb-0" }, [
+          _c("div", { staticClass: "col-md-8 offset-md-4" }, [
+            _c(
+              "button",
+              { staticClass: "btn btn-primary", on: { click: _vm.addTodo } },
+              [_vm._v("Add")]
             )
-          })
-        }),
-        1
-      )
+          ])
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "card" }, [
+      _c("div", { staticClass: "card-header" }, [_vm._v("Todo List")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-body" }, [
+        _c(
+          "div",
+          { staticClass: "row justify-content-center" },
+          _vm._l(_vm.items, function(item, key) {
+            return _c("TodoItem", {
+              key: key,
+              attrs: { item: item },
+              scopedSlots: _vm._u(
+                [
+                  {
+                    key: "delete",
+                    fn: function() {
+                      return [
+                        _c(
+                          "span",
+                          {
+                            staticClass: "todo-item-delete",
+                            on: {
+                              click: function($event) {
+                                return _vm.deleteTodo(item)
+                              }
+                            }
+                          },
+                          [_vm._v("delete")]
+                        )
+                      ]
+                    },
+                    proxy: true
+                  }
+                ],
+                null,
+                true
+              )
+            })
+          }),
+          1
+        )
+      ])
     ])
   ])
 }
@@ -38771,7 +38815,7 @@ var render = function() {
     ),
     _vm._v(" "),
     _c("div", { staticClass: "todo-item-body" }, [
-      _vm._v("\n        " + _vm._s(_vm.item.body) + "\n    ")
+      _vm._v(_vm._s(_vm.item.body))
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "todo-item-user" }, [
