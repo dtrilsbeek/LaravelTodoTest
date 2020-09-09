@@ -4,17 +4,18 @@
             <div class="card-header">
                 <span>Todo List</span>
 
-                <div class="todo-select-user">
+                <div class="todo-select-user-button" v-on:click="toggleVisibilityUserSelect()">
                     <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-caret-down-fill" fill="currentColor"
                          xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
                     </svg>
-                    <span v-on:click="selectUser()">Select User</span>
-                    <ul>
-                        <li v-for="user in users">{{ user }}</li>
-                    </ul>
+                    <span>Select User</span>
                 </div>
+
+                <ul class="todo-user-select-list" v-if="isVisibleUserSelect">
+                    <li v-for="user in users">{{ user }}</li>
+                </ul>
 
             </div>
 
@@ -45,6 +46,7 @@ export default {
 
     data() {
         return {
+            isVisibleUserSelect: false,
             selectedUserId: null,
             users: [],
             items: [],
@@ -73,8 +75,8 @@ export default {
         viewUsers() {
 
         },
-        selectUser() {
-
+        toggleVisibilityUserSelect() {
+            this.$set(this, 'isVisibleUserSelect', true);
         },
 
         getUserName: function (item) {
@@ -100,7 +102,7 @@ export default {
             }
 
             console.log(result);
-            this.$set(this, 'users', result);
+            return result;
         },
     }
 }
@@ -116,11 +118,28 @@ export default {
     cursor: pointer;
 }
 
-.todo-select-user {
+.todo-select-user-button {
     float: right;
 }
-
-.todo-select-user:hover {
+.todo-select-user-button:hover {
+    color: #3490dc;
+    cursor: pointer;
+}
+.todo-user-select-list {
+    position: absolute;
+    right: 20px;
+    top: 40px;
+    z-index: 99;
+    padding: 5px 10px 5px 20px;
+    background-color: #f8fafc;
+    border-radius: 5px;
+    border: 1px solid #636b6f;
+}
+.todo-user-select-list li {
+    list-style-type: none;
+}
+.todo-user-select-list li:hover {
+    list-style-type: disc;
     color: #3490dc;
     cursor: pointer;
 }
