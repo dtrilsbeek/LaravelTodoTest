@@ -2119,6 +2119,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -2126,7 +2133,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      selectedUserId: null,
+      isVisibleUserSelect: false,
+      selectedUser: null,
       users: [],
       items: []
     };
@@ -2157,12 +2165,39 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
     },
-    viewUsers: function viewUsers() {},
-    selectUser: function selectUser() {},
+    handleFocusOut: function handleFocusOut() {
+      this.$set(this, 'isVisibleUserSelect', false);
+    },
+    selectUser: function selectUser(user) {
+      console.log(user);
+      this.$set(this, 'selectedUser', user);
+    },
+    toggleVisibilityUserSelect: function toggleVisibilityUserSelect() {
+      var _this3 = this;
+
+      this.$set(this, 'isVisibleUserSelect', true);
+      setTimeout(function () {
+        return _this3.$refs.selectUser.focus();
+      }, 10);
+    },
     getUserName: function getUserName(item) {
       if (item.user && item.user.name) {
         return item.user.name;
       }
+    },
+    getItems: function getItems() {
+      if (this.selectedUser && this.selectedUser.id) {
+        var userId = this.selectedUser.id;
+        return this.items.filter(function (todo) {
+          if (todo.user && todo.user.id) {
+            return todo.user.id === userId;
+          }
+
+          return false;
+        });
+      }
+
+      return this.items;
     },
     getUsersFromItems: function getUsersFromItems(items) {
       var lookup = {};
@@ -2172,17 +2207,17 @@ __webpack_require__.r(__webpack_exports__);
         var item = items[itemKey];
 
         if (item.hasOwnProperty('user')) {
-          var name = item.user.name;
+          var name = item.user.id;
 
           if (!(name in lookup)) {
             lookup[name] = 1;
-            result.push(name);
+            result.push(item.user);
           }
         }
       }
 
       console.log(result);
-      this.$set(this, 'users', result);
+      return result;
     }
   }
 });
@@ -6659,7 +6694,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.card {\n    margin-top: 10px;\n}\n.todo-item-delete {\n    float: right;\n    color: #3490dc;\n    cursor: pointer;\n}\n.todo-select-user {\n    float: right;\n}\n.todo-select-user:hover {\n    color: #3490dc;\n    cursor: pointer;\n}\n", ""]);
+exports.push([module.i, "\n.card {\n    margin-top: 10px;\n}\n.todo-item-delete {\n    float: right;\n    color: #3490dc;\n    cursor: pointer;\n}\n.todo-select-user-button {\n    float: right;\n}\n.todo-select-user-button:hover {\n    color: #3490dc;\n    cursor: pointer;\n}\n.todo-user-select-list {\n    position: absolute;\n    right: 20px;\n    top: 40px;\n    z-index: 99;\n    padding: 5px 10px 5px 20px;\n    background-color: #f8fafc;\n    border-radius: 5px;\n    border: 1px solid #636b6f;\n}\n.todo-user-select-list li {\n    list-style-type: none;\n}\n.todo-user-select-list li:hover {\n    list-style-type: disc;\n    color: #3490dc;\n    cursor: pointer;\n}\n", ""]);
 
 // exports
 
@@ -38934,56 +38969,81 @@ var render = function() {
       _c("div", { staticClass: "card-header" }, [
         _c("span", [_vm._v("Todo List")]),
         _vm._v(" "),
-        _c("div", { staticClass: "todo-select-user" }, [
-          _c(
-            "svg",
-            {
-              staticClass: "bi bi-caret-down-fill",
-              attrs: {
-                width: "1em",
-                height: "1em",
-                viewBox: "0 0 16 16",
-                fill: "currentColor",
-                xmlns: "http://www.w3.org/2000/svg"
+        _c(
+          "div",
+          {
+            staticClass: "todo-select-user-button",
+            on: {
+              click: function($event) {
+                return _vm.toggleVisibilityUserSelect()
               }
-            },
-            [
-              _c("path", {
+            }
+          },
+          [
+            _c(
+              "svg",
+              {
+                staticClass: "bi bi-caret-down-fill",
                 attrs: {
-                  d:
-                    "M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"
+                  width: "1em",
+                  height: "1em",
+                  viewBox: "0 0 16 16",
+                  fill: "currentColor",
+                  xmlns: "http://www.w3.org/2000/svg"
                 }
-              })
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "span",
-            {
-              on: {
-                click: function($event) {
-                  return _vm.selectUser()
-                }
+              },
+              [
+                _c("path", {
+                  attrs: {
+                    d:
+                      "M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"
+                  }
+                })
+              ]
+            ),
+            _vm._v(" "),
+            _c("span", [_vm._v("Select User")])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "ul",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.isVisibleUserSelect,
+                expression: "isVisibleUserSelect"
               }
-            },
-            [_vm._v("Select User")]
-          ),
-          _vm._v(" "),
-          _c(
-            "ul",
-            _vm._l(_vm.users, function(user) {
-              return _c("li", [_vm._v(_vm._s(user))])
-            }),
-            0
-          )
-        ])
+            ],
+            ref: "selectUser",
+            staticClass: "todo-user-select-list",
+            attrs: { tabindex: "0" },
+            on: { focusout: _vm.handleFocusOut }
+          },
+          _vm._l(_vm.users, function(user) {
+            return _c(
+              "li",
+              {
+                on: {
+                  click: function($event) {
+                    return _vm.selectUser(user)
+                  }
+                }
+              },
+              [_vm._v(_vm._s(user.name))]
+            )
+          }),
+          0
+        )
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "card-body" }, [
         _c(
           "div",
           { staticClass: "row justify-content-center" },
-          _vm._l(_vm.items, function(item, key) {
+          _vm._l(_vm.getItems(), function(item, key) {
             return _c("TodoItem", {
               key: key,
               attrs: { item: item },

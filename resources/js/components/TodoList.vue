@@ -13,8 +13,14 @@
                     <span>Select User</span>
                 </div>
 
-                <ul class="todo-user-select-list" v-if="isVisibleUserSelect">
-                    <li v-for="user in users">{{ user }}</li>
+                <ul class="todo-user-select-list"
+                    ref="selectUser"
+                    v-show="isVisibleUserSelect"
+                    @focusout="handleFocusOut"
+                    tabindex="0">
+                    <li v-for="user in users"
+                        @click="selectUser(user)"
+                    >{{ user.name }}</li>
                 </ul>
 
             </div>
@@ -23,7 +29,7 @@
 
                 <div class="row justify-content-center">
                     <TodoItem
-                        v-for="(item, key) in items"
+                        v-for="(item, key) in getItems()"
                         :key="key"
                         v-bind:item="item"
                     >
@@ -47,7 +53,7 @@ export default {
     data() {
         return {
             isVisibleUserSelect: false,
-            selectedUserId: null,
+            selectedUser: null,
             users: [],
             items: [],
         }
@@ -72,17 +78,40 @@ export default {
                 }
             });
         },
-        viewUsers() {
-
+        handleFocusOut() {
+            this.$set(this, 'isVisibleUserSelect', false)
         },
-        toggleVisibilityUserSelect() {
+        selectUser(user) {
+            console.log(user);
+            this.$set(this, 'selectedUser', user);
+        },
+        toggleVisibilityUserSelect: function () {
             this.$set(this, 'isVisibleUserSelect', true);
+
+            setTimeout(() =>
+                this.$refs.selectUser.focus()
+            , 10);
         },
 
         getUserName: function (item) {
             if (item.user && item.user.name) {
                 return item.user.name;
             }
+        },
+
+        getItems: function () {
+            if (this.selectedUser && this.selectedUser.id) {
+                const userId = this.selectedUser.id;
+
+                return this.items.filter(todo => {
+                    if (todo.user && todo.user.id) {
+                        return todo.user.id === userId;
+                    }
+                    return false;
+                })
+            }
+
+            return this.items;
         },
 
         getUsersFromItems(items) {
@@ -92,11 +121,11 @@ export default {
             for (const itemKey in items) {
                 let item = items[itemKey];
                 if (item.hasOwnProperty('user')) {
-                    let name = item.user.name;
+                    let name = item.user.id;
 
                     if (!(name in lookup)) {
                         lookup[name] = 1;
-                        result.push(name);
+                        result.push(item.user);
                     }
                 }
             }
